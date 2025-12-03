@@ -1,5 +1,5 @@
 import React from "react";
-
+import logo from "../../public/images/logo.png";
 const Header = () => {
   return (
     <header>
@@ -30,7 +30,7 @@ const Header = () => {
           <div className="flex items-center gap-3 md:gap-4">
             {/* Logo */}
             <img
-              src="/images/logo.png"
+              src={logo}
               alt="College Logo"
               className="w-12 h-12 md:w-16 md:h-16 object-contain"
             />
