@@ -1,0 +1,247 @@
+@import "tailwindcss";
+
+/* ============================================
+   College Website - Color System
+   ============================================ */
+
+:root {
+  /* Primary Brand Colors */
+  --primary-orange: #ea580c;
+  --primary-purple: #9333ea;
+  --primary-blue: #2563eb;
+  
+  /* Course-Specific Color Schemes */
+  
+  /* BAP - Orange/Red Theme */
+  --bap-primary: #ea580c;
+  --bap-secondary: #dc2626;
+  --bap-light: #fff7ed;
+  --bap-lighter: #fef2f2;
+  
+  /* BScCS - Cyan/Blue Theme */
+  --cs-primary: #0891b2;
+  --cs-secondary: #2563eb;
+  --cs-light: #ecfeff;
+  --cs-lighter: #eff6ff;
+  
+  /* BZC - Green/Teal Theme */
+  --bzc-primary: #16a34a;
+  --bzc-secondary: #0d9488;
+  --bzc-light: #f0fdf4;
+  --bzc-lighter: #f0fdfa;
+  
+  /* BiPC - Green/Emerald Theme */
+  --bipc-primary: #16a34a;
+  --bipc-secondary: #059669;
+  --bipc-light: #f0fdf4;
+  --bipc-lighter: #d1fae5;
+  
+  /* CEC - Amber/Yellow Theme */
+  --cec-primary: #d97706;
+  --cec-secondary: #ca8a04;
+  --cec-light: #fffbeb;
+  --cec-lighter: #fef9c3;
+  
+  /* MEC - Indigo/Purple Theme */
+  --mec-primary: #4f46e5;
+  --mec-secondary: #9333ea;
+  --mec-light: #eef2ff;
+  --mec-lighter: #faf5ff;
+  
+  /* MPC - Blue Theme */
+  --mpc-primary: #2563eb;
+  --mpc-secondary: #1d4ed8;
+  --mpc-light: #eff6ff;
+  --mpc-lighter: #dbeafe;
+  
+  /* MBiPC - Purple/Blue Theme */
+  --mbipc-primary: #9333ea;
+  --mbipc-secondary: #2563eb;
+  --mbipc-light: #faf5ff;
+  --mbipc-lighter: #eff6ff;
+  
+  /* BComCA - Purple/Pink Theme */
+  --bcomca-primary: #9333ea;
+  --bcomca-secondary: #ec4899;
+  --bcomca-light: #faf5ff;
+  --bcomca-lighter: #fce7f3;
+  
+  /* Common UI Colors */
+  --success: #16a34a;
+  --warning: #d97706;
+  --error: #dc2626;
+  --info: #2563eb;
+  
+  /* Text Colors */
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-tertiary: #6b7280;
+  --text-light: #9ca3af;
+  --text-white: #ffffff;
+  
+  /* Background Colors */
+  --bg-white: #ffffff;
+  --bg-gray-50: #f9fafb;
+  --bg-gray-100: #f3f4f6;
+  --bg-gray-200: #e5e7eb;
+  
+  /* Border Colors */
+  --border-gray: #e5e7eb;
+  --border-gray-light: #f3f4f6;
+  
+  /* Shadow Colors */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  
+  /* Opacity Values */
+  --opacity-90: 0.9;
+  --opacity-95: 0.95;
+  --opacity-20: 0.2;
+  --opacity-30: 0.3;
+}
+
+/* ============================================
+   Utility Classes for Course Themes
+   ============================================ */
+
+/* BAP Theme Classes */
+.theme-bap {
+  --theme-primary: var(--bap-primary);
+  --theme-secondary: var(--bap-secondary);
+  --theme-light: var(--bap-light);
+  --theme-lighter: var(--bap-lighter);
+}
+
+/* BScCS Theme Classes */
+.theme-cs {
+  --theme-primary: var(--cs-primary);
+  --theme-secondary: var(--cs-secondary);
+  --theme-light: var(--cs-light);
+  --theme-lighter: var(--cs-lighter);
+}
+
+/* BZC Theme Classes */
+.theme-bzc {
+  --theme-primary: var(--bzc-primary);
+  --theme-secondary: var(--bzc-secondary);
+  --theme-light: var(--bzc-light);
+  --theme-lighter: var(--bzc-lighter);
+}
+
+/* BiPC Theme Classes */
+.theme-bipc {
+  --theme-primary: var(--bipc-primary);
+  --theme-secondary: var(--bipc-secondary);
+  --theme-light: var(--bipc-light);
+  --theme-lighter: var(--bipc-lighter);
+}
+
+/* CEC Theme Classes */
+.theme-cec {
+  --theme-primary: var(--cec-primary);
+  --theme-secondary: var(--cec-secondary);
+  --theme-light: var(--cec-light);
+  --theme-lighter: var(--cec-lighter);
+}
+
+/* MEC Theme Classes */
+.theme-mec {
+  --theme-primary: var(--mec-primary);
+  --theme-secondary: var(--mec-secondary);
+  --theme-light: var(--mec-light);
+  --theme-lighter: var(--mec-lighter);
+}
+
+/* MPC Theme Classes */
+.theme-mpc {
+  --theme-primary: var(--mpc-primary);
+  --theme-secondary: var(--mpc-secondary);
+  --theme-light: var(--mpc-light);
+  --theme-lighter: var(--mpc-lighter);
+}
+
+/* MBiPC Theme Classes */
+.theme-mbipc {
+  --theme-primary: var(--mbipc-primary);
+  --theme-secondary: var(--mbipc-secondary);
+  --theme-light: var(--mbipc-light);
+  --theme-lighter: var(--mbipc-lighter);
+}
+
+/* BComCA Theme Classes */
+.theme-bcomca {
+  --theme-primary: var(--bcomca-primary);
+  --theme-secondary: var(--bcomca-secondary);
+  --theme-light: var(--bcomca-light);
+  --theme-lighter: var(--bcomca-lighter);
+}
+
+/* ============================================
+   Gradient Utilities
+   ============================================ */
+
+.gradient-primary {
+  background: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
+}
+
+.gradient-light {
+  background: linear-gradient(135deg, var(--theme-light), var(--bg-white), var(--theme-lighter));
+}
+
+/* ============================================
+   Global Styles
+   ============================================ */
+
+
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--text-primary);
+}
+
+/* ============================================
+   Animation Utilities
+   ============================================ */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+/* ============================================
+   Scrollbar Styling
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-tertiary);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
