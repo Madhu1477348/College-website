@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Redirecting...</title>
+  <script>
+    // Preserve the original path and query string
+    const path = location.pathname.replace(/^\/College-website\//, '/');
+    const newUrl = location.origin + '/College-website/' + path + location.search + location.hash;
+    // Redirect to index.html (SPA entry point)
+    location.replace(newUrl);
+  </script>
+</head>
+<body>
+  <p>Redirecting to the application...</p>
+</body>
+</html>
