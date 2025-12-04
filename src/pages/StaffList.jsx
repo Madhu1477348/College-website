@@ -26,7 +26,10 @@ const StaffList = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL || "https://college-website-space-1.onrender.com"}/api/staff/`
+        `${
+          import.meta.env.VITE_API_URL ||
+          "https://college-website-backend-3ct5.onrender.com/api"
+        }/staff/`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch staff data");

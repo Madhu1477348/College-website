@@ -9,11 +9,7 @@ const Notifications = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const res = await fetch(
-          `${
-            import.meta.env.VITE_API_URL || "https://college-website-space-1.onrender.com"
-          }/api/notifications/`
-        );
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/notifications/`);
         const data = await res.json();
         setNotifications(data);
         setLoading(false);

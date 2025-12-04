@@ -27,8 +27,8 @@ const Contact = () => {
     try {
       const apiUrl =
         import.meta.env.VITE_API_URL ||
-        "https://college-website-space-1.onrender.com";
-      const response = await fetch(`${apiUrl}/api/contact/`, {
+        "https://college-website-backend-3ct5.onrender.com/api";
+      const response = await fetch(`${apiUrl}/contact/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

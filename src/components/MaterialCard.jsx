@@ -1,6 +1,12 @@
 import React from "react";
 import { IoDocumentText, IoDownload, IoLink } from "react-icons/io5";
 
+const API =
+  import.meta.env.VITE_API_URL ||
+  "https://college-website-backend-3ct5.onrender.com/api";
+
+const ROOT = API.replace("/api", "");
+
 const MaterialCard = ({ branch }) => {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
@@ -46,9 +52,10 @@ const MaterialCard = ({ branch }) => {
                         <span className="text-gray-600 flex-1">
                           {syllabus.title}
                         </span>
+
                         {syllabus.file && (
                           <a
-                            href={`https://college-website-space-1.onrender.com${syllabus.file}`}
+                            href={`${ROOT}${syllabus.file}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-purple-600 hover:text-purple-800"
@@ -56,6 +63,7 @@ const MaterialCard = ({ branch }) => {
                             <IoDownload className="w-4 h-4" />
                           </a>
                         )}
+
                         {syllabus.link && (
                           <a
                             href={syllabus.link}
