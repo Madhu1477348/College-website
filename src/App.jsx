@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -24,6 +24,8 @@ import BScCS from "./pages/courses/degree/BScCS";
 import BComCA from "./pages/courses/degree/BComCA";
 import BZC from "./pages/courses/degree/BZC";
 import BAP from "./pages/courses/degree/BAP";
+import Inter from "./pages/Inter";
+import Degree from "./pages/Degree";
 
 function App() {
   return (
@@ -43,6 +45,9 @@ function App() {
             <Route path="/management" element={<Management />} />
             <Route path="/examination" element={<Examination />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/inter" element={<Inter />} />
+            <Route path="/degree" element={<Degree />} />
+
             {/* Inter Course Routes */}
             <Route path="/courses/inter/mpc" element={<MPC />} />
             <Route path="/courses/inter/bipc" element={<BiPC />} />

@@ -63,25 +63,19 @@ const Navbar = () => {
       ],
     },
     {
-      title: "Examination",
-      dropdown: [
-        {
-          title: "Inter",
-          subItems: [
-            { name: "Unit Test", link: "/examination" },
-            { name: "Half-Yearly", link: "/examination" },
-            { name: "Pre-IPE", link: "/examination" },
-          ],
-        },
-        {
-          title: "Degree",
-          subItems: [
-            { name: "Mid Exams", link: "/examination" },
-            { name: "Semester Exams", link: "/examination" },
-          ],
-        },
-      ],
+  title: "Examination",
+  dropdown: [
+    {
+      name: "Inter",
+      link: "/examination?type=inter",
     },
+    {
+      name: "Degree",
+      link: "/examination?type=degree",
+    },
+  ],
+},
+
     {
       title: "Notifications",
       dropdown: [

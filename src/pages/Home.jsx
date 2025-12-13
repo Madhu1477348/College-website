@@ -60,6 +60,7 @@ const Home = () => {
                 "M.E.C (Maths, Economics, Commerce)",
               ]}
               color="blue"
+              to="/inter"
             />
 
             {/* Degree Card */}
@@ -73,6 +74,7 @@ const Home = () => {
                 "B.A (History, Economics, Politics)",
               ]}
               color="indigo"
+              to="/degree"
             />
           </div>
         </div>
@@ -105,49 +107,6 @@ const Home = () => {
               </div>
             </div>
           </div>
-
-          {/* Quick Links / Events */}
-          {/* <div>
-            <h2 className="text-2xl font-bold text-blue-900 mb-6 border-b-2 border-blue-200 pb-2">
-              Quick Links
-            </h2>
-            <div className="bg-white shadow-md rounded-lg p-6">
-              <ul className="space-y-3">
-                <li>
-                  <a
-                    href="#"
-                    className="block p-3 bg-gray-50 rounded hover:bg-blue-50 text-blue-700 font-medium transition hover:pl-4"
-                  >
-                    Student Portal
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block p-3 bg-gray-50 rounded hover:bg-blue-50 text-blue-700 font-medium transition hover:pl-4"
-                  >
-                    Faculty Login
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block p-3 bg-gray-50 rounded hover:bg-blue-50 text-blue-700 font-medium transition hover:pl-4"
-                  >
-                    Library
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block p-3 bg-gray-50 rounded hover:bg-blue-50 text-blue-700 font-medium transition hover:pl-4"
-                  >
-                    Alumni Network
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div> */}
         </div>
       </div>
     </div>
