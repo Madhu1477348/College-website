@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import MaterialCard from "../components/MaterialCard";
 
+import { API_URL } from "../api";
+
 const Syllabus = () => {
   const [branches, setBranches] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,12 +16,7 @@ const Syllabus = () => {
   const fetchBranches = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `${
-          import.meta.env.VITE_API_URL ||
-          "https://college-website-backend-3ct5.onrender.com/api"
-        }/branches/`
-      );
+      const response = await fetch(`${API_URL}/branches/`);
       if (!response.ok) {
         throw new Error("Failed to fetch branches");
       }

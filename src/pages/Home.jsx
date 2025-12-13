@@ -3,18 +3,15 @@ import Hero from "../components/Hero";
 import CourseCard from "../components/CourseCard";
 import Notification from "../components/Notification";
 
+import { API_URL } from "../api";
+
 const Home = () => {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const res = await fetch(
-          `${
-            import.meta.env.VITE_API_URL ||
-            "https://college-website-backend-3ct5.onrender.com/api"
-          }/notifications/`
-        );
+        const res = await fetch(`${API_URL}/notifications/`);
         const data = await res.json();
         setNotifications(data);
       } catch (err) {

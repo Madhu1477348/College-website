@@ -1,13 +1,14 @@
 import React from "react";
 import { IoDocumentText, IoDownload, IoLink } from "react-icons/io5";
-
-const API =
-  import.meta.env.VITE_API_URL ||
-  "https://college-website-backend-3ct5.onrender.com/api";
-
-const ROOT = API.replace("/api", "");
+import { API_URL, FILE_BASE_URL } from "../api";
 
 const MaterialCard = ({ branch }) => {
+  const getFileUrl = (file) => {
+    if (!file) return "";
+    if (file.startsWith("http")) return file;
+    return `${FILE_BASE_URL}${file}`;
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
       <div className="bg-linear-to-r from-orange-500 to-purple-600 p-4">
@@ -55,7 +56,7 @@ const MaterialCard = ({ branch }) => {
 
                         {syllabus.file && (
                           <a
-                            href={`${ROOT}${syllabus.file}`}
+                            href={getFileUrl(syllabus.file)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-purple-600 hover:text-purple-800"

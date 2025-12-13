@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { API_URL } from "../api";
+
 const Examination = () => {
   // ----- State --------------------------------------------------------------
   const [activeTab, setActiveTab] = useState("inter"); // inter | degree | mid | semester
@@ -11,12 +13,7 @@ const Examination = () => {
   useEffect(() => {
     const fetchExams = async () => {
       try {
-        const response = await fetch(
-          `${
-            import.meta.env.VITE_API_URL ||
-            "https://college-website-backend-3ct5.onrender.com/api"
-          }/examinations/`
-        );
+        const response = await fetch(`${API_URL}/examinations/`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

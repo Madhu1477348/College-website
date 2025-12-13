@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API =
-  import.meta.env.VITE_API_URL ||
-  "https://college-website-backend-3ct5.onrender.com/api";
+import { API_URL as API } from "../api";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("notifications");
@@ -50,9 +48,21 @@ const AdminDashboard = () => {
   };
 
   const fetchStaff = async () => {
-    const res = await fetch(`${API}/staff/`);
-    const data = await res.json();
-    setStaff(data);
+    try {
+      const res = await fetch(`${API}/staff/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to fetch staff data");
+      }
+      const data = await res.json();
+      setStaff(data);
+    } catch (err) {
+      console.error("Error fetching staff:", err);
+      alert("Failed to load staff data. Please try again.");
+    }
   };
 
   const fetchMaterials = async () => {

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { IoLocation, IoCall, IoMail, IoTime } from "react-icons/io5";
 
+import { API_URL } from "../api";
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -25,10 +27,7 @@ const Contact = () => {
     setSubmitStatus(null);
 
     try {
-      const apiUrl =
-        import.meta.env.VITE_API_URL ||
-        "https://college-website-backend-3ct5.onrender.com/api";
-      const response = await fetch(`${apiUrl}/contact/`, {
+      const response = await fetch(`${API_URL}/contact/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

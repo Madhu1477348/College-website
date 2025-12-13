@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "../../public/images/logo.png";
+import { Link } from "react-router-dom";
 const Header = () => {
   return (
     <header>
@@ -7,20 +8,22 @@ const Header = () => {
       <div className="bg-blue-900 text-white py-2 px-4 text-xs md:text-sm">
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-2 md:gap-0">
           <div className="flex flex-wrap justify-center md:justify-start gap-3 md:gap-4">
-            <span className="flex items-center">📞 +91 9876543210</span>
-            <span className="flex items-center">✉️ example@email.com</span>
+            <Link href="tel:+919490274848" className="flex items-center">📞 +91 9490274848</Link>
+            <Link href="tel:+919440224233" className="flex items-center">📞 +91 9440224233</Link>
+            <Link href="mailto:spacejuniorcollege@gmail.com" className="flex items-center">✉️ spacejuniorcollege@gmail.com</Link>
+            <Link href="mailto:spacewomendegreecollege@gmail.com" className="flex items-center">✉️ spacewomendegreecollege@gmail.com</Link>
           </div>
-          <div className="flex gap-3 md:gap-4">
-            <a href="#" className="hover:text-blue-200 transition">
+          {/* <div className="flex gap-3 md:gap-4">
+            <Link href="#" className="hover:text-blue-200 transition">
               Facebook
-            </a>
-            <a href="#" className="hover:text-blue-200 transition">
+            </Link>
+            <Link href="#" className="hover:text-blue-200 transition">
               Instagram
-            </a>
-            <a href="#" className="hover:text-blue-200 transition">
+            </Link>
+            <Link href="#" className="hover:text-blue-200 transition">
               YouTube
-            </a>
-          </div>
+            </Link>
+          </div> */}
         </div>
       </div>
 

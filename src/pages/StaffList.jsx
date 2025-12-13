@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
+import { API_URL } from "../api";
+
 const StaffList = () => {
   const [staff, setStaff] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,12 +27,7 @@ const StaffList = () => {
   const fetchStaff = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `${
-          import.meta.env.VITE_API_URL ||
-          "https://college-website-backend-3ct5.onrender.com/api"
-        }/staff/`
-      );
+      const response = await fetch(`${API_URL}/staff/`);
       if (!response.ok) {
         throw new Error("Failed to fetch staff data");
       }
