@@ -16,11 +16,6 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const [submitMessage, setSubmitMessage] = useState({ text: "", type: "" });
   const [editMessage, setEditMessage] = useState({ text: "", type: "" });
-  // popup
-  const [popups, setPopups] = useState([]);
-  const [popupImage, setPopupImage] = useState(null);
-  const [popupTitle, setPopupTitle] = useState("");
-
   const authHeaders = {
     Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     "Content-Type": "application/json",
@@ -41,7 +36,6 @@ const AdminDashboard = () => {
       fetchMaterials();
       fetchExaminations();
       fetchUsers();
-      fetchPopups();
     }
   }, [navigate]);
 
@@ -119,17 +113,6 @@ const AdminDashboard = () => {
     }
   };
 
-  const fetchPopups = async () => {
-    try {
-      const res = await fetch(`${API}/popups/`);
-      if (res.ok) {
-        const data = await res.json();
-        setPopups(Array.isArray(data) ? data : []);
-      }
-    } catch (err) {
-      console.error("Failed to fetch popups", err);
-    }
-  };
 
   /** ===============================
    *  LOGOUT
@@ -316,7 +299,6 @@ const AdminDashboard = () => {
               "materials",
               "examinations",
               "users",
-              "popups",
             ].map((tab) => (
               <button
                 key={tab}
@@ -940,161 +922,6 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {/* =======================
-    TAB: POPUPS
-======================= */}
-          {activeTab === "popups" && (
-            <div>
-              <h2 className="text-xl font-bold mb-4">Manage Popup Images</h2>
-
-              {/* CREATE POPUP */}
-              <form
-                className="space-y-4 mb-8 border-b pb-8"
-                onSubmit={async (e) => {
-                  e.preventDefault();
-
-                  const fd = new FormData();
-                  fd.append("title", popupTitle);
-                  fd.append("image", popupImage);
-                  fd.append("active", true);
-
-                  const res = await fetch(`${API}/popups/`, {
-                    method: "POST",
-                    headers: {
-                      Authorization: `Bearer ${localStorage.getItem(
-                        "access_token"
-                      )}`,
-                    },
-                    body: fd,
-                  });
-
-                  if (res.ok) {
-                    setSubmitMessage({
-                      text: "Popup uploaded successfully!",
-                      type: "success",
-                    });
-                    setPopupTitle("");
-                    setPopupImage(null);
-                    fetchPopups();
-                  } else {
-                    setSubmitMessage({
-                      text: "Failed to upload popup",
-                      type: "error",
-                    });
-                  }
-                }}
-              >
-                <input
-                  type="text"
-                  placeholder="Popup title (optional)"
-                  value={popupTitle}
-                  onChange={(e) => setPopupTitle(e.target.value)}
-                  className="block w-full border p-2"
-                />
-
-                <input
-                  type="file"
-                  accept="image/*"
-                  required
-                  onChange={(e) => setPopupImage(e.target.files[0])}
-                  className="block w-full border p-2"
-                />
-
-                <button className="bg-blue-600 text-white px-4 py-2 rounded">
-                  Upload Popup
-                </button>
-
-                {submitMessage.text && (
-                  <p
-                    className={`text-sm mt-2 ${
-                      submitMessage.type === "success"
-                        ? "text-green-600"
-                        : "text-red-600"
-                    }`}
-                  >
-                    {submitMessage.text}
-                  </p>
-                )}
-              </form>
-
-              {/* EXISTING POPUPS */}
-              <h3 className="text-lg font-bold mb-4">Existing Popups</h3>
-
-              {popups.map((popup) => (
-                <div
-                  key={popup.id}
-                  className="border p-4 rounded flex justify-between items-center mb-3"
-                >
-                  <div className="flex items-center gap-4">
-                    <img
-                      src={popup.image}
-                      alt="popup"
-                      className="w-24 h-16 object-cover rounded"
-                    />
-                    <div>
-                      <p className="font-semibold">
-                        {popup.title || "No title"}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        Status:{" "}
-                        <span
-                          className={
-                            popup.active ? "text-green-600" : "text-gray-500"
-                          }
-                        >
-                          {popup.active ? "Active" : "Inactive"}
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2">
-                    {/* TOGGLE ACTIVE */}
-                    <button
-                      onClick={async () => {
-                        await fetch(`${API}/popups/${popup.id}/`, {
-                          method: "PATCH",
-                          headers: {
-                            Authorization: `Bearer ${localStorage.getItem(
-                              "access_token"
-                            )}`,
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify({ active: !popup.active }),
-                        });
-                        fetchPopups();
-                      }}
-                      className={`px-3 py-1 rounded text-white ${
-                        popup.active ? "bg-gray-500" : "bg-green-600"
-                      }`}
-                    >
-                      {popup.active ? "Deactivate" : "Activate"}
-                    </button>
-
-                    {/* DELETE */}
-                    <button
-                      onClick={async () => {
-                        if (window.confirm("Delete this popup?")) {
-                          await fetch(`${API}/popups/${popup.id}/`, {
-                            method: "DELETE",
-                            headers: {
-                              Authorization: `Bearer ${localStorage.getItem(
-                                "access_token"
-                              )}`,
-                            },
-                          });
-                          fetchPopups();
-                        }
-                      }}
-                      className="bg-red-600 text-white px-3 py-1 rounded"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </div>
     </div>
