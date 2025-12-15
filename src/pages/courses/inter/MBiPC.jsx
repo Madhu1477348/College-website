@@ -187,13 +187,13 @@ const MBiPC = () => {
               Join our M.Bi.P.C program and unlock endless possibilities
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
+              {/* <a
                 href="/admissions"
                 className="bg-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors shadow-lg"
                 style={{ color: "var(--theme-primary)" }}
               >
                 Apply Now
-              </a>
+              </a> */}
               <a
                 href="/contact"
                 className="text-white px-8 py-4 rounded-lg font-bold text-lg transition-colors border-2 border-white"

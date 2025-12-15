@@ -191,7 +191,7 @@ const BAP = () => {
               {higherStudies.map((study, index) => (
                 <div
                   key={index}
-                  className="bg-white bg-opacity-20 backdrop-blur-sm rounded-lg p-4 text-center font-medium hover:bg-opacity-30 transition-all duration-300 transform hover:scale-105 border border-white border-opacity-30"
+                  className="bg-opacity-20 backdrop-blur-sm rounded-lg p-4 text-center font-medium hover:bg-opacity-30 transition-all duration-300 transform hover:scale-105 border border-white border-opacity-30"
                 >
                   {study}
                 </div>
@@ -287,13 +287,13 @@ const BAP = () => {
               service
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
+              {/* <a
                 href="/admissions"
                 className="bg-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors shadow-lg"
                 style={{ color: "var(--theme-primary)" }}
               >
                 Apply Now
-              </a>
+              </a> */}
               <a
                 href="/contact"
                 className="text-white px-8 py-4 rounded-lg font-bold text-lg transition-colors border-2 border-white"

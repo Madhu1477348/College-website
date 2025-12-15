@@ -31,38 +31,10 @@ import Degree from "./pages/Degree";
 import { API_URL } from "./api";
 
 function App() {
-    // POPUP STATE
-  const [popupImage, setPopupImage] = useState(null);
-  const [showPopup, setShowPopup] = useState(false);
 
-  useEffect(()=>{
-    const shown = localStorage.getItem("popupShown");
-
-    if(!shown){
-      axios.get(`${API_URL}/popups/`).then((Res) =>{
-        if(resizeBy.data.image){
-          setPopupImage(resizeBy.data.image);
-          setShowPopup(true);
-        }
-      })
-      .catch((err) => console.error("popup error:", err))
-    }
-  },[])
- 
-  const closePopup = () => {
-    setShowPopup(false);
-    localStorage.setItem("popupshown", "true")
-  }
 
   return (
     <Router>
-      {/* POPUP */}
-      {showPopup && (
-        <WelcomePopup
-          imageUrl={popupImage}
-          onClose={closePopup}
-        />
-      )}
       <div className="min-h-screen bg-gray-50">
         <Header />
         <Navbar />

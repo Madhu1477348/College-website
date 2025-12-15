@@ -22,6 +22,7 @@ const Degree = () => {
             "Software Careers",
           ]}
           color="indigo"
+          to="/courses/degree/bsc-cs"
         />
 
         <CourseCard
@@ -32,6 +33,7 @@ const Degree = () => {
             "Business Studies",
             "Computer Applications",
           ]}
+          to="/courses/degree/bcom-ca"
         />
 
         <CourseCard
@@ -43,6 +45,7 @@ const Degree = () => {
             "Chemistry",
             "Life Sciences",
           ]}
+          to="/courses/degree/bzc"
         />
 
         <CourseCard
@@ -53,6 +56,7 @@ const Degree = () => {
             "Economics",
             "Political Science",
           ]}
+          to="/courses/degree/bap"
         />
       </div>
 

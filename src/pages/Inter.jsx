@@ -22,6 +22,7 @@ const Inter = () => {
             "Engineering & IIT Foundation",
           ]}
           color="blue"
+          to="/courses/inter/mpc"
         />
 
         <CourseCard
@@ -34,6 +35,7 @@ const Inter = () => {
             "Medical & NEET Foundation",
           ]}
           color="indigo"
+          to="/courses/inter/bipc"
         />
 
         <CourseCard
@@ -45,6 +47,7 @@ const Inter = () => {
             "Commerce",
             "Law & Business Foundation",
           ]}
+          to="/courses/inter/cec"
         />
 
         <CourseCard
@@ -56,6 +59,7 @@ const Inter = () => {
             "Commerce",
             "Commerce Careers",
           ]}
+          to="/courses/inter/mec"
         />
 
         <CourseCard
@@ -67,6 +71,7 @@ const Inter = () => {
             "Physics",
             "Chemistry",
           ]}
+          to="/courses/inter/mbipc"
         />
       </div>
 
