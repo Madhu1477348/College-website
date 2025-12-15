@@ -9,12 +9,17 @@ const AdminDashboard = () => {
   const [staff, setStaff] = useState([]);
   const [materials, setMaterials] = useState([]);
   const [examinations, setExaminations] = useState([]);
-  const [accounts, setAccounts] = useState([]);
+  const [users, setUsers] = useState([]);
   const [editingNotification, setEditingNotification] = useState(null);
   const [editingStaff, setEditingStaff] = useState(null);
+  const [editingUser, setEditingUser] = useState(null);
   const navigate = useNavigate();
   const [submitMessage, setSubmitMessage] = useState({ text: "", type: "" });
   const [editMessage, setEditMessage] = useState({ text: "", type: "" });
+  // popup
+  const [popups, setPopups] = useState([]);
+  const [popupImage, setPopupImage] = useState(null);
+  const [popupTitle, setPopupTitle] = useState("");
 
   const authHeaders = {
     Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -35,7 +40,8 @@ const AdminDashboard = () => {
       fetchStaff();
       fetchMaterials();
       fetchExaminations();
-      fetchAccounts();
+      fetchUsers();
+      fetchPopups();
     }
   }, [navigate]);
 
@@ -44,9 +50,15 @@ const AdminDashboard = () => {
    *  =============================== */
 
   const fetchNotifications = async () => {
-    const res = await fetch(`${API}/notifications/`);
-    const data = await res.json();
-    setNotifications(data);
+    try {
+      const res = await fetch(`${API}/notifications/`);
+      if (res.ok) {
+        const data = await res.json();
+        setNotifications(Array.isArray(data) ? data : []);
+      }
+    } catch (error) {
+      console.error("Failed to fetch notifications", error);
+    }
   };
 
   const fetchStaff = async () => {
@@ -68,30 +80,54 @@ const AdminDashboard = () => {
   };
 
   const fetchMaterials = async () => {
-    const res = await fetch(`${API}/materials/`);
-    const data = await res.json();
-    setMaterials(data);
+    try {
+      const res = await fetch(`${API}/materials/`);
+      if (res.ok) {
+        const data = await res.json();
+        setMaterials(Array.isArray(data) ? data : []);
+      }
+    } catch (error) {
+      console.error("Failed to fetch materials", error);
+    }
   };
 
   const fetchExaminations = async () => {
-    const res = await fetch(`${API}/examinations/`);
-    const data = await res.json();
-    setExaminations(data);
+    try {
+      const res = await fetch(`${API}/examinations/`);
+      if (res.ok) {
+        const data = await res.json();
+        setExaminations(Array.isArray(data) ? data : []);
+      }
+    } catch (error) {
+      console.error("Failed to fetch examinations", error);
+    }
   };
 
-  const fetchAccounts = async () => {
+  const fetchUsers = async () => {
     try {
-      const res = await fetch(`${API}/accounts/`, {
+      const res = await fetch(`${API}/accounts/users/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
       });
       if (res.ok) {
         const data = await res.json();
-        setAccounts(data);
+        setUsers(Array.isArray(data) ? data : []);
       }
     } catch (err) {
-      console.error("Error fetching accounts:", err);
+      console.error("Error fetching users:", err);
+    }
+  };
+
+  const fetchPopups = async () => {
+    try {
+      const res = await fetch(`${API}/popups/`);
+      if (res.ok) {
+        const data = await res.json();
+        setPopups(Array.isArray(data) ? data : []);
+      }
+    } catch (err) {
+      console.error("Failed to fetch popups", err);
     }
   };
 
@@ -149,8 +185,8 @@ const AdminDashboard = () => {
       "Delete this examination?"
     );
 
-  const handleDeleteAccount = (id) =>
-    deleteItem(`${API}/accounts/${id}/`, fetchAccounts, "Delete this account?");
+  const handleDeleteUser = (id) =>
+    deleteItem(`${API}/accounts/users/${id}/`, fetchUsers, "Delete this user?");
 
   /** ===============================
    *  EDIT NOTIFICATION
@@ -218,8 +254,39 @@ const AdminDashboard = () => {
         setEditingStaff(null);
         fetchStaff();
       }, 1000);
+    }
+  };
+
+  /** ===============================
+   *  EDIT USER
+   *  =============================== */
+
+  const startEditUser = (user) => {
+    setEditingUser({ ...user, password: "" }); // password empty to avoid re-hashing or showing
+    setEditMessage({ text: "", type: "" });
+  };
+
+  const submitEditUser = async (e) => {
+    e.preventDefault();
+    const { id, username, email, role, password } = editingUser;
+
+    const body = { username, email, role };
+    if (password) body.password = password; // Only send if updating
+
+    const res = await fetch(`${API}/accounts/users/${id}/`, {
+      method: "PUT",
+      headers: authHeaders,
+      body: JSON.stringify(body),
+    });
+
+    if (res.ok) {
+      setEditMessage({ text: "User updated", type: "success" });
+      setTimeout(() => {
+        setEditingUser(null);
+        fetchUsers();
+      }, 1000);
     } else {
-      setEditMessage({ text: "Failed to update staff", type: "error" });
+      setEditMessage({ text: "Failed to update user", type: "error" });
     }
   };
 
@@ -248,7 +315,8 @@ const AdminDashboard = () => {
               "staff",
               "materials",
               "examinations",
-              "accounts",
+              "users",
+              "popups",
             ].map((tab) => (
               <button
                 key={tab}
@@ -359,23 +427,24 @@ const AdminDashboard = () => {
               {/* Existing notifications */}
               <h3 className="text-lg font-bold mb-4">Existing Notifications</h3>
 
-              {notifications.map((note) => (
-                <div
-                  key={note.id}
-                  className="border p-4 rounded flex justify-between mb-2"
-                >
-                  <div>
-                    <h4 className="font-bold">{note.title}</h4>
-                    <p className="text-sm">{note.content}</p>
-                  </div>
-                  <button
-                    onClick={() => handleDeleteNotification(note.id)}
-                    className="text-red-600 text-sm"
+              {Array.isArray(notifications) &&
+                notifications.map((note) => (
+                  <div
+                    key={note.id}
+                    className="border p-4 rounded flex justify-between mb-2"
                   >
-                    Delete
-                  </button>
-                </div>
-              ))}
+                    <div>
+                      <h4 className="font-bold">{note.title}</h4>
+                      <p className="text-sm">{note.content}</p>
+                    </div>
+                    <button
+                      onClick={() => handleDeleteNotification(note.id)}
+                      className="text-red-600 text-sm"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))}
             </>
           )}
 
@@ -453,6 +522,18 @@ const AdminDashboard = () => {
                   className="block w-full border p-2"
                 />
 
+                <div className="border p-2">
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                    Staff Image
+                  </label>
+                  <input
+                    name="image"
+                    type="file"
+                    accept="image/*"
+                    className="block w-full"
+                  />
+                </div>
+
                 <button className="bg-blue-600 text-white px-4 py-2 rounded">
                   Add Staff
                 </button>
@@ -525,7 +606,7 @@ const AdminDashboard = () => {
                   name="file"
                   type="file"
                   required
-                  className="block w-full"
+                  className="block w-full border p-2"
                 />
 
                 <button className="bg-blue-600 text-white px-4 py-2 rounded">
@@ -533,23 +614,28 @@ const AdminDashboard = () => {
                 </button>
               </form>
 
-              {materials.map((mat) => (
-                <div
-                  key={mat.id}
-                  className="border p-4 rounded flex justify-between mb-2"
-                >
-                  <a href={mat.file} target="_blank" className="text-blue-600">
-                    {mat.title}
-                  </a>
-
-                  <button
-                    onClick={() => handleDeleteMaterial(mat.id)}
-                    className="text-red-600 text-sm"
+              {Array.isArray(materials) &&
+                materials.map((mat) => (
+                  <div
+                    key={mat.id}
+                    className="border p-4 rounded flex justify-between mb-2"
                   >
-                    Delete
-                  </button>
-                </div>
-              ))}
+                    <a
+                      href={mat.file}
+                      target="_blank"
+                      className="text-blue-600"
+                    >
+                      {mat.title}
+                    </a>
+
+                    <button
+                      onClick={() => handleDeleteMaterial(mat.id)}
+                      className="text-red-600 text-sm"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))}
             </div>
           )}
 
@@ -607,7 +693,7 @@ const AdminDashboard = () => {
                 <input
                   name="file"
                   type="file"
-                  className="block w-full"
+                  className="block w-full border p-2"
                   required
                 />
 
@@ -622,98 +708,300 @@ const AdminDashboard = () => {
                 </button>
               </form>
 
-              {examinations.map((exam) => (
-                <div
-                  key={exam.id}
-                  className="border p-4 rounded flex justify-between mb-2"
-                >
-                  <div>
-                    <h4 className="font-bold">{exam.title}</h4>
-                    <p className="text-sm">{exam.category.toUpperCase()}</p>
-                    <a
-                      href={exam.file}
-                      target="_blank"
-                      className="text-blue-600"
-                    >
-                      View
-                    </a>
-                  </div>
-
-                  <button
-                    onClick={() => handleDeleteExamination(exam.id)}
-                    className="text-red-600 text-sm"
+              {Array.isArray(examinations) &&
+                examinations.map((exam) => (
+                  <div
+                    key={exam.id}
+                    className="border p-4 rounded flex justify-between mb-2"
                   >
-                    Delete
-                  </button>
-                </div>
-              ))}
+                    <div>
+                      <h4 className="font-bold">{exam.title}</h4>
+                      <p className="text-sm">{exam.category.toUpperCase()}</p>
+                      <a
+                        href={exam.file}
+                        target="_blank"
+                        className="text-blue-600"
+                      >
+                        View
+                      </a>
+                    </div>
+
+                    <button
+                      onClick={() => handleDeleteExamination(exam.id)}
+                      className="text-red-600 text-sm"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))}
             </div>
           )}
 
           {/* =======================
               TAB: ACCOUNTS
           ======================= */}
-          {activeTab === "accounts" && (
+          {/* =======================
+              TAB: USERS
+          ======================= */}
+          {activeTab === "users" && (
             <div>
-              <h2 className="text-xl font-bold mb-4">Manage Accounts</h2>
+              <h2 className="text-xl font-bold mb-4">Manage Users</h2>
 
+              {/* EDIT FORM or CREATE FORM */}
+              {editingUser ? (
+                <div className="mb-8 border-b pb-8 bg-gray-50 p-4 rounded">
+                  <h3 className="text-lg font-bold mb-4">Edit User</h3>
+                  <form onSubmit={submitEditUser} className="space-y-4">
+                    <input
+                      name="username"
+                      value={editingUser.username}
+                      onChange={(e) =>
+                        setEditingUser({
+                          ...editingUser,
+                          username: e.target.value,
+                        })
+                      }
+                      placeholder="Username"
+                      className="block w-full border p-2"
+                      required
+                    />
+                    <input
+                      name="email"
+                      type="email"
+                      value={editingUser.email}
+                      onChange={(e) =>
+                        setEditingUser({
+                          ...editingUser,
+                          email: e.target.value,
+                        })
+                      }
+                      placeholder="Email"
+                      className="block w-full border p-2"
+                      required
+                    />
+                    <input
+                      name="password"
+                      type="password"
+                      value={editingUser.password}
+                      onChange={(e) =>
+                        setEditingUser({
+                          ...editingUser,
+                          password: e.target.value,
+                        })
+                      }
+                      placeholder="New Password (leave blank to keep current)"
+                      className="block w-full border p-2"
+                    />
+                    <select
+                      name="role"
+                      value={editingUser.role || "student"}
+                      onChange={(e) =>
+                        setEditingUser({
+                          ...editingUser,
+                          role: e.target.value,
+                        })
+                      }
+                      className="block w-full border p-2"
+                    >
+                      <option value="admin">Admin</option>
+                      <option value="staff">Staff</option>
+                      <option value="student">Student</option>
+                    </select>
+
+                    <div className="flex gap-2">
+                      <button className="bg-green-600 text-white px-4 py-2 rounded">
+                        Save Changes
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setEditingUser(null)}
+                        className="bg-gray-400 text-white px-4 py-2 rounded"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+
+                    {editMessage.text && (
+                      <p
+                        className={`text-sm mt-2 ${
+                          editMessage.type === "success"
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }`}
+                      >
+                        {editMessage.text}
+                      </p>
+                    )}
+                  </form>
+                </div>
+              ) : (
+                <form
+                  className="space-y-4 mb-8 border-b pb-8"
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    const fd = new FormData(e.target);
+                    const data = Object.fromEntries(fd.entries());
+
+                    const res = await fetch(`${API}/accounts/users/`, {
+                      method: "POST",
+                      headers: authHeaders,
+                      body: JSON.stringify(data),
+                    });
+
+                    if (res.ok) {
+                      setSubmitMessage({
+                        text: "User created!",
+                        type: "success",
+                      });
+                      e.target.reset();
+                      fetchUsers();
+                    } else {
+                      const error = await res.json();
+                      setSubmitMessage({
+                        text: error.detail || "Failed to create user",
+                        type: "error",
+                      });
+                    }
+                  }}
+                >
+                  <input
+                    name="username"
+                    placeholder="Username"
+                    className="block w-full border p-2"
+                    required
+                  />
+                  <input
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                    className="block w-full border p-2"
+                    required
+                  />
+                  <input
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    className="block w-full border p-2"
+                    required
+                  />
+                  <select name="role" className="block w-full border p-2">
+                    <option value="admin">Admin</option>
+                    <option value="staff">Staff</option>
+                    <option value="student">Student</option>
+                  </select>
+
+                  <button className="bg-blue-600 text-white px-4 py-2 rounded">
+                    Create User
+                  </button>
+
+                  {submitMessage.text && (
+                    <p
+                      className={`text-sm mt-2 ${
+                        submitMessage.type === "success"
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {submitMessage.text}
+                    </p>
+                  )}
+                </form>
+              )}
+
+              {Array.isArray(users) &&
+                users.map((u) => (
+                  <div
+                    key={u.id}
+                    className="border p-4 rounded flex justify-between mb-2 items-center"
+                  >
+                    <div>
+                      <h4 className="font-bold">{u.username}</h4>
+                      <p className="text-sm text-gray-600">{u.email}</p>
+                      <p className="text-xs text-gray-500 capitalize">
+                        {u.role || "User"}
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => startEditUser(u)}
+                        className="text-blue-600 text-sm hover:underline"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteUser(u.id)}
+                        className="text-red-600 text-sm hover:underline"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          )}
+
+          {/* =======================
+    TAB: POPUPS
+======================= */}
+          {activeTab === "popups" && (
+            <div>
+              <h2 className="text-xl font-bold mb-4">Manage Popup Images</h2>
+
+              {/* CREATE POPUP */}
               <form
                 className="space-y-4 mb-8 border-b pb-8"
                 onSubmit={async (e) => {
                   e.preventDefault();
-                  const fd = new FormData(e.target);
-                  const data = Object.fromEntries(fd.entries());
 
-                  const res = await fetch(`${API}/accounts/`, {
+                  const fd = new FormData();
+                  fd.append("title", popupTitle);
+                  fd.append("image", popupImage);
+                  fd.append("active", true);
+
+                  const res = await fetch(`${API}/popups/`, {
                     method: "POST",
-                    headers: authHeaders,
-                    body: JSON.stringify(data),
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem(
+                        "access_token"
+                      )}`,
+                    },
+                    body: fd,
                   });
 
                   if (res.ok) {
                     setSubmitMessage({
-                      text: "Account created!",
+                      text: "Popup uploaded successfully!",
                       type: "success",
                     });
-                    e.target.reset();
-                    fetchAccounts();
+                    setPopupTitle("");
+                    setPopupImage(null);
+                    fetchPopups();
                   } else {
-                    const error = await res.json();
                     setSubmitMessage({
-                      text: error.detail || "Failed to create account",
+                      text: "Failed to upload popup",
                       type: "error",
                     });
                   }
                 }}
               >
                 <input
-                  name="username"
-                  placeholder="Username"
+                  type="text"
+                  placeholder="Popup title (optional)"
+                  value={popupTitle}
+                  onChange={(e) => setPopupTitle(e.target.value)}
                   className="block w-full border p-2"
-                  required
                 />
+
                 <input
-                  name="email"
-                  type="email"
-                  placeholder="Email"
-                  className="block w-full border p-2"
+                  type="file"
+                  accept="image/*"
                   required
-                />
-                <input
-                  name="password"
-                  type="password"
-                  placeholder="Password"
+                  onChange={(e) => setPopupImage(e.target.files[0])}
                   className="block w-full border p-2"
-                  required
                 />
-                <select name="role" className="block w-full border p-2">
-                  <option value="admin">Admin</option>
-                  <option value="staff">Staff</option>
-                  <option value="student">Student</option>
-                </select>
 
                 <button className="bg-blue-600 text-white px-4 py-2 rounded">
-                  Create Account
+                  Upload Popup
                 </button>
 
                 {submitMessage.text && (
@@ -729,24 +1017,80 @@ const AdminDashboard = () => {
                 )}
               </form>
 
-              {accounts.map((acc) => (
+              {/* EXISTING POPUPS */}
+              <h3 className="text-lg font-bold mb-4">Existing Popups</h3>
+
+              {popups.map((popup) => (
                 <div
-                  key={acc.id}
-                  className="border p-4 rounded flex justify-between mb-2"
+                  key={popup.id}
+                  className="border p-4 rounded flex justify-between items-center mb-3"
                 >
-                  <div>
-                    <h4 className="font-bold">{acc.username}</h4>
-                    <p className="text-sm text-gray-600">{acc.email}</p>
-                    <p className="text-xs text-gray-500 capitalize">
-                      {acc.role || "User"}
-                    </p>
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={popup.image}
+                      alt="popup"
+                      className="w-24 h-16 object-cover rounded"
+                    />
+                    <div>
+                      <p className="font-semibold">
+                        {popup.title || "No title"}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Status:{" "}
+                        <span
+                          className={
+                            popup.active ? "text-green-600" : "text-gray-500"
+                          }
+                        >
+                          {popup.active ? "Active" : "Inactive"}
+                        </span>
+                      </p>
+                    </div>
                   </div>
-                  <button
-                    onClick={() => handleDeleteAccount(acc.id)}
-                    className="text-red-600 text-sm"
-                  >
-                    Delete
-                  </button>
+
+                  <div className="flex gap-2">
+                    {/* TOGGLE ACTIVE */}
+                    <button
+                      onClick={async () => {
+                        await fetch(`${API}/popups/${popup.id}/`, {
+                          method: "PATCH",
+                          headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                              "access_token"
+                            )}`,
+                            "Content-Type": "application/json",
+                          },
+                          body: JSON.stringify({ active: !popup.active }),
+                        });
+                        fetchPopups();
+                      }}
+                      className={`px-3 py-1 rounded text-white ${
+                        popup.active ? "bg-gray-500" : "bg-green-600"
+                      }`}
+                    >
+                      {popup.active ? "Deactivate" : "Activate"}
+                    </button>
+
+                    {/* DELETE */}
+                    <button
+                      onClick={async () => {
+                        if (window.confirm("Delete this popup?")) {
+                          await fetch(`${API}/popups/${popup.id}/`, {
+                            method: "DELETE",
+                            headers: {
+                              Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                              )}`,
+                            },
+                          });
+                          fetchPopups();
+                        }
+                      }}
+                      className="bg-red-600 text-white px-3 py-1 rounded"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>

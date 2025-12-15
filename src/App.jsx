@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from 'axios'
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
@@ -13,6 +14,7 @@ import Management from "./pages/Management";
 import Examination from "./pages/Examination";
 import Notifications from "./pages/Notifications";
 import Login from "./pages/Login";
+import StaffDetails from "./pages/StaffDetails";
 // Course pages - Inter
 import MPC from "./pages/courses/inter/MPC";
 import BiPC from "./pages/courses/inter/BiPC";
@@ -26,10 +28,41 @@ import BZC from "./pages/courses/degree/BZC";
 import BAP from "./pages/courses/degree/BAP";
 import Inter from "./pages/Inter";
 import Degree from "./pages/Degree";
+import { API_URL } from "./api";
 
 function App() {
+    // POPUP STATE
+  const [popupImage, setPopupImage] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(()=>{
+    const shown = localStorage.getItem("popupShown");
+
+    if(!shown){
+      axios.get(`${API_URL}/popups/`).then((Res) =>{
+        if(resizeBy.data.image){
+          setPopupImage(resizeBy.data.image);
+          setShowPopup(true);
+        }
+      })
+      .catch((err) => console.error("popup error:", err))
+    }
+  },[])
+ 
+  const closePopup = () => {
+    setShowPopup(false);
+    localStorage.setItem("popupshown", "true")
+  }
+
   return (
     <Router>
+      {/* POPUP */}
+      {showPopup && (
+        <WelcomePopup
+          imageUrl={popupImage}
+          onClose={closePopup}
+        />
+      )}
       <div className="min-h-screen bg-gray-50">
         <Header />
         <Navbar />
@@ -39,6 +72,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/staff" element={<StaffList />} />
+            <Route path="/staff/:id" element={<StaffDetails />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/syllabus" element={<Syllabus />} />
             <Route path="/admissions" element={<Admissions />} />

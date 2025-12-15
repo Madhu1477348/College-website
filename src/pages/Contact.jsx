@@ -45,9 +45,11 @@ const Contact = () => {
           message: "",
         });
       } else {
+        console.error("Contact form submission failed:", response.status);
         setSubmitStatus("error");
       }
     } catch (error) {
+      console.error("Error submitting contact form:", error);
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);

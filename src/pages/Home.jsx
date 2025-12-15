@@ -2,13 +2,18 @@ import React, { useEffect, useState } from "react";
 import Hero from "../components/Hero";
 import CourseCard from "../components/CourseCard";
 import Notification from "../components/Notification";
+import WelcomePopup from "../components/WelcomePopup"; // Import the popup
 
 import { API_URL } from "../api";
 
 const Home = () => {
   const [notifications, setNotifications] = useState([]);
+  const [showPopup, setShowPopup] = useState(false); // State to control popup visibility
 
   useEffect(() => {
+    // Show popup on mount
+    setShowPopup(true);
+
     const fetchNotifications = async () => {
       try {
         const res = await fetch(`${API_URL}/notifications/`);
@@ -23,6 +28,13 @@ const Home = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
+      {/* Show Popup if active */}
+      {showPopup && (
+        <WelcomePopup
+          imageUrl="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000&auto=format&fit=crop"
+          onClose={() => setShowPopup(false)}
+        />
+      )}
       <Hero />
 
       {/* Welcome Section */}

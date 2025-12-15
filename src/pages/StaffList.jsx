@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { API_URL } from "../api";
 
@@ -9,6 +9,7 @@ const StaffList = () => {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState("all");
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchStaff();
@@ -134,7 +135,8 @@ const StaffList = () => {
               {filteredStaff.map((member, index) => (
                 <tr
                   key={member.id}
-                  className="hover:bg-gray-50 transition-colors duration-200"
+                  onClick={() => navigate(`/staff/${member.id}`)}
+                  className="hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
                 >
                   <td className="px-6 py-4 whitespace-nowrap text-gray-700 font-medium">
                     {index + 1}

@@ -4,10 +4,10 @@ import {
   IoLocationSharp,
   IoCall,
   IoMail,
-  IoLogoFacebook,
-  IoLogoTwitter,
-  IoLogoInstagram,
-  IoLogoLinkedin,
+  // IoLogoFacebook,
+  // IoLogoTwitter,
+  // IoLogoInstagram,
+  // IoLogoLinkedin,
 } from "react-icons/io5";
 
 const Footer = () => {
@@ -25,7 +25,7 @@ const Footer = () => {
               dedicated to shaping the future leaders of tomorrow through
               academic excellence and holistic development.
             </p>
-            <div className="flex space-x-4">
+            {/* <div className="flex space-x-4">
               <a
                 href="#"
                 className="text-gray-400 hover:text-white transition-colors"
@@ -50,7 +50,7 @@ const Footer = () => {
               >
                 <IoLogoLinkedin className="w-6 h-6" />
               </a>
-            </div>
+            </div> */}
           </div>
 
           {/* Quick Links */}
@@ -137,11 +137,12 @@ const Footer = () => {
               </li>
               <li className="flex items-center">
                 <IoCall className="w-5 h-5 text-blue-400 mr-2 shrink-0" />
-                <span>+91 98765 43210</span>
+                <span>+91 9490274848</span>
               </li>
               <li className="flex items-center">
                 <IoMail className="w-5 h-5 text-blue-400 mr-2 shrink-0" />
-                <span>info@spacecollege.com</span>
+                <span>spacejuniorcollege11076@gmail.com</span> <br /> 
+                <span>spacewomendegreecollege@gmail.com</span>
               </li>
             </ul>
           </div>
