@@ -18,63 +18,31 @@ const Navbar = () => {
     {
       title: "Courses",
       dropdown: [
-        {
-          title: "Inter",
-          subItems: [
-            { name: "M.P.C", link: "/courses/inter/mpc" },
-            { name: "Bi.P.C", link: "/courses/inter/bipc" },
-            { name: "C.E.C", link: "/courses/inter/cec" },
-            { name: "M.E.C", link: "/courses/inter/mec" },
-            { name: "M.Bi.P.C", link: "/courses/inter/mbipc" },
-          ],
-        },
-        {
-          title: "Degree",
-          subItems: [
-            { name: "B.Sc (CS)", link: "/courses/degree/bsc-cs" },
-            { name: "B.Com (CA)", link: "/courses/degree/bcom-ca" },
-            { name: "B.ZC (Bot)", link: "/courses/degree/bzc" },
-            { name: "B.A (HEP)", link: "/courses/degree/bap" },
-          ],
-        },
+        { name: "Inter", link: "/inter" },
+        { name: "Degree", link: "/degree" },
       ],
     },
     { title: "Admissions", link: "/admissions" },
     {
       title: "Administration",
       dropdown: [
-        {
-          title: "Management",
-          subItems: [
-            { name: "Chairman", link: "/management" },
-            { name: "Principal", link: "/management" },
-          ],
-        },
-        {
-          title: "Staff",
-          subItems: [
-            { name: "Teaching Staff", link: "/staff?category=Teaching Staff" },
-            {
-              name: "Non-Teaching Staff",
-              link: "/staff?category=Non-Teaching Staff",
-            },
-          ],
-        },
+        { name: "Management", link: "/management" },
+        { name: "Staff", link: "/staff" },
       ],
     },
     {
-  title: "Examination",
-  dropdown: [
-    {
-      name: "Inter",
-      link: "/examination?type=inter",
+      title: "Examination",
+      dropdown: [
+        {
+          name: "Inter",
+          link: "/examination?type=inter",
+        },
+        {
+          name: "Degree",
+          link: "/examination?type=degree",
+        },
+      ],
     },
-    {
-      name: "Degree",
-      link: "/examination?type=degree",
-    },
-  ],
-},
 
     {
       title: "Notifications",
@@ -174,7 +142,11 @@ const Navbar = () => {
             className="md:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? <IoClose className="w-6 h-6" /> : <IoMenu className="w-6 h-6" />}
+            {mobileMenuOpen ? (
+              <IoClose className="w-6 h-6" />
+            ) : (
+              <IoMenu className="w-6 h-6" />
+            )}
           </button>
         </div>
 
@@ -195,6 +167,7 @@ const Navbar = () => {
                     <Link
                       to={item.link || "#"}
                       className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 flex-1"
+                      onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.title}
                     </Link>
@@ -231,6 +204,7 @@ const Navbar = () => {
                                 key={nIdx}
                                 to={nested.link || "#"}
                                 className="block px-4 py-2 text-sm text-gray-600 hover:text-blue-600"
+                                onClick={() => setMobileMenuOpen(false)}
                               >
                                 {nested.name}
                               </Link>
@@ -240,6 +214,7 @@ const Navbar = () => {
                           <Link
                             to={subItem.link || "#"}
                             className="block px-4 py-2 text-sm text-gray-600 hover:text-blue-600"
+                            onClick={() => setMobileMenuOpen(false)}
                           >
                             {subItem.name}
                           </Link>

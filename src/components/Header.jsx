@@ -42,7 +42,7 @@ const Header = () => {
                 Space Junior and Degree College
               </h1>
               {/* <p className="text-gray-600 text-xs md:text-sm font-medium tracking-wider mt-1">
-                Affiliated to Yogi Vemana University
+                University Name
               </p> */}
             </div>
           </div>

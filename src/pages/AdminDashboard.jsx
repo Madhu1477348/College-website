@@ -9,6 +9,7 @@ const AdminDashboard = () => {
   const [staff, setStaff] = useState([]);
   const [materials, setMaterials] = useState([]);
   const [examinations, setExaminations] = useState([]);
+  const [accounts, setAccounts] = useState([]);
   const [editingNotification, setEditingNotification] = useState(null);
   const [editingStaff, setEditingStaff] = useState(null);
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const AdminDashboard = () => {
       fetchStaff();
       fetchMaterials();
       fetchExaminations();
+      fetchAccounts();
     }
   }, [navigate]);
 
@@ -75,6 +77,22 @@ const AdminDashboard = () => {
     const res = await fetch(`${API}/examinations/`);
     const data = await res.json();
     setExaminations(data);
+  };
+
+  const fetchAccounts = async () => {
+    try {
+      const res = await fetch(`${API}/accounts/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAccounts(data);
+      }
+    } catch (err) {
+      console.error("Error fetching accounts:", err);
+    }
   };
 
   /** ===============================
@@ -130,6 +148,9 @@ const AdminDashboard = () => {
       fetchExaminations,
       "Delete this examination?"
     );
+
+  const handleDeleteAccount = (id) =>
+    deleteItem(`${API}/accounts/${id}/`, fetchAccounts, "Delete this account?");
 
   /** ===============================
    *  EDIT NOTIFICATION
@@ -222,21 +243,25 @@ const AdminDashboard = () => {
         {/* SIDE NAV */}
         <div className="w-full md:w-64 bg-white shadow-md rounded-lg h-fit">
           <nav className="flex flex-col p-4 space-y-2">
-            {["notifications", "staff", "materials", "examinations"].map(
-              (tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`text-left px-4 py-2 rounded ${
-                    activeTab === tab
-                      ? "bg-blue-600 text-white"
-                      : "hover:bg-gray-100 text-gray-700"
-                  }`}
-                >
-                  Manage {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                </button>
-              )
-            )}
+            {[
+              "notifications",
+              "staff",
+              "materials",
+              "examinations",
+              "accounts",
+            ].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`text-left px-4 py-2 rounded ${
+                  activeTab === tab
+                    ? "bg-blue-600 text-white"
+                    : "hover:bg-gray-100 text-gray-700"
+                }`}
+              >
+                Manage {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </button>
+            ))}
           </nav>
         </div>
 
@@ -616,6 +641,108 @@ const AdminDashboard = () => {
 
                   <button
                     onClick={() => handleDeleteExamination(exam.id)}
+                    className="text-red-600 text-sm"
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* =======================
+              TAB: ACCOUNTS
+          ======================= */}
+          {activeTab === "accounts" && (
+            <div>
+              <h2 className="text-xl font-bold mb-4">Manage Accounts</h2>
+
+              <form
+                className="space-y-4 mb-8 border-b pb-8"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  const fd = new FormData(e.target);
+                  const data = Object.fromEntries(fd.entries());
+
+                  const res = await fetch(`${API}/accounts/`, {
+                    method: "POST",
+                    headers: authHeaders,
+                    body: JSON.stringify(data),
+                  });
+
+                  if (res.ok) {
+                    setSubmitMessage({
+                      text: "Account created!",
+                      type: "success",
+                    });
+                    e.target.reset();
+                    fetchAccounts();
+                  } else {
+                    const error = await res.json();
+                    setSubmitMessage({
+                      text: error.detail || "Failed to create account",
+                      type: "error",
+                    });
+                  }
+                }}
+              >
+                <input
+                  name="username"
+                  placeholder="Username"
+                  className="block w-full border p-2"
+                  required
+                />
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                  className="block w-full border p-2"
+                  required
+                />
+                <input
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                  className="block w-full border p-2"
+                  required
+                />
+                <select name="role" className="block w-full border p-2">
+                  <option value="admin">Admin</option>
+                  <option value="staff">Staff</option>
+                  <option value="student">Student</option>
+                </select>
+
+                <button className="bg-blue-600 text-white px-4 py-2 rounded">
+                  Create Account
+                </button>
+
+                {submitMessage.text && (
+                  <p
+                    className={`text-sm mt-2 ${
+                      submitMessage.type === "success"
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {submitMessage.text}
+                  </p>
+                )}
+              </form>
+
+              {accounts.map((acc) => (
+                <div
+                  key={acc.id}
+                  className="border p-4 rounded flex justify-between mb-2"
+                >
+                  <div>
+                    <h4 className="font-bold">{acc.username}</h4>
+                    <p className="text-sm text-gray-600">{acc.email}</p>
+                    <p className="text-xs text-gray-500 capitalize">
+                      {acc.role || "User"}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleDeleteAccount(acc.id)}
                     className="text-red-600 text-sm"
                   >
                     Delete
